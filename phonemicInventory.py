@@ -28,23 +28,52 @@ ASPIRATED = True
 # Define the phoneme class, which contains both an orthographic string and a boolean (is it a vowel?)
 class Phoneme:
     def __init__(self, orth, vowel, PoA):
-        self.orth = orth
-        self.vowel = vowel
-        self.PoA = PoA
-        
-    def isEqual(self, other):
-        return (self.orth == other.orth and self.vowel == other.vowel and 
-                self.PoA == other.PoA)
+        self._orth = orth
+        self._vowel = vowel
+        self._PoA = PoA
     
-    def printPhoneme(self):
-        print(self.orth)
+    def get_orth(self):
+        return self._orth
+     
+    def set_orth(self, orth):
+        self._orth = orth
+    
+    def get_vowel(self):
+        return self._vowel
+
+    def get_PoA(self):
+        return self._PoA
+        
+    def equals(self, other):
+        return (self.get_orth() == other.get_orth() and self.get_vowel() == other.get_vowel() and 
+                self.get_PoA() == other.get_PoA())
+    
+    orth = property(get_orth, set_orth)
+    
+    #def printPhoneme(self):
+    #    print(self._orth)
 
 class Vowel(Phoneme):
     def __init__(self, orth, PoA):
         Phoneme.__init__(self, orth, True, PoA)
-    
-    def isEqual(self, other):
-        return self.isEqual(other) 
+        
+    def get_orth(self):
+        return self._orth
+
+    def set_orth(self, orth):
+        self._orth = orth
+ 
+    def get_vowel(self):
+        return self._vowel
+
+    def get_PoA(self):
+        return self._PoA
+        
+    def equals(self, other):
+        return (self.orth == other.get_orth() and self.get_vowel() == other.get_vowel() and 
+                self.get_PoA() == other.get_PoA())
+
+    orth = property(get_orth, set_orth)
 
 class Consonant(Phoneme):
     def __init__(self, orth, PoA, MoA, voiced, aspirated):
@@ -53,8 +82,8 @@ class Consonant(Phoneme):
         self.voiced = voiced
         self.aspirated = aspirated
     
-    def isEqual(self, other):
-        return (self.isEqual(other) and self.MoA == other.MoA and 
+    def equals(self, other):
+        return (self.equals(other) and self.MoA == other.MoA and 
                 self.voiced == other.voiced and self.aspirated == other.aspirated)
 
 # Define the phoneme inventory

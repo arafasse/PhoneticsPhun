@@ -40,15 +40,23 @@ class Phoneme:
     
     def get_vowel(self):
         return self._vowel
+    
+    def set_vowel(self, vowel):
+        self._vowel = vowel
 
     def get_PoA(self):
         return self._PoA
+    
+    def set_PoA(self, PoA):
+        self._PoA = PoA
         
     def equals(self, other):
-        return (self.get_orth() == other.get_orth() and self.get_vowel() == other.get_vowel() and 
-                self.get_PoA() == other.get_PoA())
+        return (self.orth == other.get_orth() and self.vowel == other.get_vowel() and 
+                self.PoA == other.get_PoA())
     
     orth = property(get_orth, set_orth)
+    vowel = property(get_vowel, set_vowel)
+    PoA = property(get_PoA, set_PoA)
     
     #def printPhoneme(self):
     #    print(self._orth)
@@ -56,35 +64,64 @@ class Phoneme:
 class Vowel(Phoneme):
     def __init__(self, orth, PoA):
         Phoneme.__init__(self, orth, True, PoA)
-        
-    def get_orth(self):
+    
+'''    def get_orth(self):
         return self._orth
-
+     
     def set_orth(self, orth):
         self._orth = orth
- 
+    
     def get_vowel(self):
         return self._vowel
+    
+    def set_vowel(self, vowel):
+        self._vowel = vowel
 
     def get_PoA(self):
         return self._PoA
+    
+    def set_PoA(self, PoA):
+        self._PoA = PoA
         
     def equals(self, other):
-        return (self.orth == other.get_orth() and self.get_vowel() == other.get_vowel() and 
-                self.get_PoA() == other.get_PoA())
+        return (self.orth == other.get_orth() and self.vowel == other.get_vowel() and 
+                self.PoA == other.get_PoA())
 
     orth = property(get_orth, set_orth)
+'''
 
 class Consonant(Phoneme):
     def __init__(self, orth, PoA, MoA, voiced, aspirated):
         Phoneme.__init__(self, orth, False, PoA)
-        self.MoA = MoA
-        self.voiced = voiced
-        self.aspirated = aspirated
+        self._MoA = MoA
+        self._voiced = voiced
+        self._aspirated = aspirated
+        
+    def get_MoA(self):
+        return self._MoA
+     
+    def set_MoA(self, MoA):
+        self._MoA = MoA
+    
+    def get_voiced(self):
+        return self._voiced
+    
+    def set_voiced(self, voiced):
+        self._voiced = voiced
+
+    def get_aspirated(self):
+        return self._aspirated
+    
+    def set_aspirated(self, aspirated):
+        self._aspirated = aspirated
+        
+    MoA = property(get_MoA, set_MoA)
+    voiced = property(get_voiced, set_voiced)
+    aspirated = property(get_aspirated, set_aspirated)
     
     def equals(self, other):
-        return (self.equals(other) and self.MoA == other.MoA and 
-                self.voiced == other.voiced and self.aspirated == other.aspirated)
+        return (self.equals(other) and self.MoA == other.get_MoA() and 
+                self.voiced == other.get_voiced() and self.aspirated == other.get_aspirated())
 
 # Define the phoneme inventory
 phonemeInv = {}

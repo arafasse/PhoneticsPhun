@@ -7,5 +7,6 @@ sequence = []
 for l in lines:
 	sequence.append(phonemicInventory.phonemeInv[l.strip()])
 
-#for s in sequence:
-#	s.printPhoneme()
+for s in sequence:
+	#s.printPhoneme()
+	print(s.vowel)

@@ -8,6 +8,8 @@ DENTAL = 4
 LABIAL = 5
 PALATOGUTTURAL = 6
 LABIOGUTTURAL = 7
+CONSONANTAL_ALLOPHONES = 8
+OTHER = 9
 
 # Manners of articulation
 PLOSIVE = 1
@@ -72,6 +74,8 @@ phonemeInv['r'] = Vowel("r",RETROFLEX)
 phonemeInv['R'] = Vowel("R",RETROFLEX)
 phonemeInv['l'] = Vowel("l",DENTAL)
 phonemeInv['L'] = Vowel("L",DENTAL)
+phonemeInv['M'] = Vowel("M",CONSONANTAL_ALLOPHONES)
+phonemeInv['H'] = Vowel("H",CONSONANTAL_ALLOPHONES)
 
 # Define consonants
 phonemeInv['k'] = Consonant("k",GUTTURAL,PLOSIVE,UNVOICED,UNASPIRATED)
@@ -108,6 +112,8 @@ phonemeInv['sh'] = Consonant("sh",PALATAL,FRICATIVE,UNVOICED,ASPIRATED)
 phonemeInv['Sh'] = Consonant("Sh",RETROFLEX,FRICATIVE,UNVOICED,ASPIRATED)
 phonemeInv['s'] = Consonant("s",DENTAL,FRICATIVE,UNVOICED,ASPIRATED)
 
+# Space
+phonemeInv[''] = Phoneme("",False,OTHER)
 
 #for p in phonemeInv:
 #phonemeInv[p].printPhoneme()

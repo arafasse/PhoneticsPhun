@@ -33,6 +33,9 @@ class Phoneme:
     def isEqual(self, other):
         return (self.orth == other.orth and self.vowel == other.vowel and 
                 self.PoA == other.PoA)
+    
+    def printPhoneme(self):
+        print self.orth 
 
 class Vowel(Phoneme):
     def __init__(self, orth, PoA):
@@ -51,7 +54,6 @@ class Consonant(Phoneme):
     def isEqual(self, other):
         return (self.isEqual(other) and self.MoA == other.MoA and 
                 self.voiced == other.voiced and self.aspirated == other.aspirated)
-    
 
 # Define the phoneme inventory
 phonemeInv = []
@@ -68,42 +70,44 @@ phonemeInv.append(Vowel("o",LABIOGUTTURAL))
 phonemeInv.append(Vowel("au",LABIOGUTTURAL))
 phonemeInv.append(Vowel("r",RETROFLEX))
 phonemeInv.append(Vowel("R",RETROFLEX))
-phonemeInv.append(Phoneme("l",DENTAL))
-phonemeInv.append(Phoneme("L",DENTAL))
+phonemeInv.append(Vowel("l",DENTAL))
+phonemeInv.append(Vowel("L",DENTAL))
 
 # Define consonants
-phonemeInv.append(Phoneme("k",GUTTURAL,PLOSIVE,UNVOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("kh",GUTTURAL,PLOSIVE,UNVOICED,ASPIRATED))
-phonemeInv.append(Phoneme("c",PALATAL,PLOSIVE,UNVOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("ch",PALATAL,PLOSIVE,UNVOICED,ASPIRATED))
-phonemeInv.append(Phoneme("T",RETROFLEX,PLOSIVE,UNVOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("Th",RETROFLEX,PLOSIVE,UNVOICED,ASPIRATED))
-phonemeInv.append(Phoneme("t",DENTAL,PLOSIVE,UNVOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("th",DENTAL,PLOSIVE,UNVOICED,ASPIRATED))
-phonemeInv.append(Phoneme("p",LABIAL,PLOSIVE,UNVOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("ph",LABIAL,PLOSIVE,UNVOICED,ASPIRATED))
-phonemeInv.append(Phoneme("g",GUTTURAL,PLOSIVE,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("gh",GUTTURAL,PLOSIVE,VOICED,ASPIRATED))
-phonemeInv.append(Phoneme("j",PALATAL,PLOSIVE,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("jh",PALATAL,PLOSIVE,VOICED,ASPIRATED))
-phonemeInv.append(Phoneme("D",RETROFLEX,PLOSIVE,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("Dh",RETROFLEX,PLOSIVE,VOICED,ASPIRATED))
-phonemeInv.append(Phoneme("d",DENTAL,PLOSIVE,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("dh",DENTAL,PLOSIVE,VOICED,ASPIRATED))
-phonemeInv.append(Phoneme("b",LABIAL,PLOSIVE,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("bh",LABIAL,PLOSIVE,VOICED,ASPIRATED))
-phonemeInv.append(Phoneme("N",RETROFLEX,NASAL,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("n",DENTAL,NASAL,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("m",LABIAL,NASAL,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("N2",GUTTURAL,NASAL,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("n2",PALATAL,NASAL,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("h",GUTTURAL,APPROXIMANT,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("y",PALATAL,APPROXIMANT,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("r",RETROFLEX,APPROXIMANT,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("l",DENTAL,APPROXIMANT,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("v",LABIAL,APPROXIMANT,VOICED,UNASPIRATED))
-phonemeInv.append(Phoneme("sh",PALATAL,FRICATIVE,UNVOICED,ASPIRATED))
-phonemeInv.append(Phoneme("Sh",RETROFLEX,FRICATIVE,UNVOICED,ASPIRATED))
-phonemeInv.append(Phoneme("s",DENTAL,FRICATIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("k",GUTTURAL,PLOSIVE,UNVOICED,UNASPIRATED))
+phonemeInv.append(Consonant("kh",GUTTURAL,PLOSIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("c",PALATAL,PLOSIVE,UNVOICED,UNASPIRATED))
+phonemeInv.append(Consonant("ch",PALATAL,PLOSIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("T",RETROFLEX,PLOSIVE,UNVOICED,UNASPIRATED))
+phonemeInv.append(Consonant("Th",RETROFLEX,PLOSIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("t",DENTAL,PLOSIVE,UNVOICED,UNASPIRATED))
+phonemeInv.append(Consonant("th",DENTAL,PLOSIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("p",LABIAL,PLOSIVE,UNVOICED,UNASPIRATED))
+phonemeInv.append(Consonant("ph",LABIAL,PLOSIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("g",GUTTURAL,PLOSIVE,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("gh",GUTTURAL,PLOSIVE,VOICED,ASPIRATED))
+phonemeInv.append(Consonant("j",PALATAL,PLOSIVE,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("jh",PALATAL,PLOSIVE,VOICED,ASPIRATED))
+phonemeInv.append(Consonant("D",RETROFLEX,PLOSIVE,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("Dh",RETROFLEX,PLOSIVE,VOICED,ASPIRATED))
+phonemeInv.append(Consonant("d",DENTAL,PLOSIVE,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("dh",DENTAL,PLOSIVE,VOICED,ASPIRATED))
+phonemeInv.append(Consonant("b",LABIAL,PLOSIVE,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("bh",LABIAL,PLOSIVE,VOICED,ASPIRATED))
+phonemeInv.append(Consonant("N",RETROFLEX,NASAL,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("n",DENTAL,NASAL,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("m",LABIAL,NASAL,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("N2",GUTTURAL,NASAL,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("n2",PALATAL,NASAL,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("h",GUTTURAL,APPROXIMANT,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("y",PALATAL,APPROXIMANT,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("r",RETROFLEX,APPROXIMANT,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("l",DENTAL,APPROXIMANT,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("v",LABIAL,APPROXIMANT,VOICED,UNASPIRATED))
+phonemeInv.append(Consonant("sh",PALATAL,FRICATIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("Sh",RETROFLEX,FRICATIVE,UNVOICED,ASPIRATED))
+phonemeInv.append(Consonant("s",DENTAL,FRICATIVE,UNVOICED,ASPIRATED))
 
 
+for p in phonemeInv:
+    p.printPhoneme()

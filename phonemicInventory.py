@@ -146,12 +146,14 @@ phonemeInv['e'] = Vowel("e",PALATOGUTTURAL)
 phonemeInv['ai'] = Vowel("ai",PALATOGUTTURAL)
 phonemeInv['o'] = Vowel("o",LABIOGUTTURAL)
 phonemeInv['au'] = Vowel("au",LABIOGUTTURAL)
-phonemeInv['r'] = Vowel("r",RETROFLEX)
+phonemeInv['r2'] = Vowel("r2",RETROFLEX)
 phonemeInv['R'] = Vowel("R",RETROFLEX)
-phonemeInv['l'] = Vowel("l",DENTAL)
+phonemeInv['l2'] = Vowel("l2",DENTAL)
 phonemeInv['L'] = Vowel("L",DENTAL)
 phonemeInv['M'] = Vowel("M",CONSONANTAL_ALLOPHONES)
 phonemeInv['H'] = Vowel("H",CONSONANTAL_ALLOPHONES)
+
+#OH NO your r's and l's will overwrite each other
 
 # Define consonants
 phonemeInv['k'] = Consonant("k",GUTTURAL,PLOSIVE,UNVOICED,UNASPIRATED)

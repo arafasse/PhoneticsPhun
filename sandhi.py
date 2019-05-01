@@ -14,16 +14,30 @@ print(sequence[2].equalsDifferentVowel(sequence[1]))
 
 phonemeInv = phonemicInventory.phonemeInv
 
+# Define the probability dictionary
+RULES = {}
+RULES['C1'] = 0.2 # lower because of potential word boundaries 
+RULES['D1'] = 0.5
+RULES['D2'] = 0.5
 
-# this needs to act on a specific sequence...
+
 # Vowel rules (excerpted) 
 
-# Actually, I want this to apply to the entire sequence... so maybe I should define a helper function? 
-
+def C1(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return
+    if not seq[i].vowel or not seq[i+1].vowel:
+        return
+    if (seq[i].equals(phonemeInv["a"]) or seq[i].equals(phonemeInv["aa"])) and seq[i+1].equals(phonemeInv["e"]):
+        seq[i] = phonemeInv["ai"]
+        return 
 
 # ooooh it applied it before M... is that right??
-
+# Describe what this does
+# Describe - and justify - the probability that you'll apply to it
 def D1(seq, i):
+    # I'd like to have the probability encoded into the function... but I think I might have to use global variables instead
+    # Or a global probability dictionary
     if i >= len(seq) - 1 or i < 0:
         return
     if not seq[i].vowel or not seq[i+1].vowel:
@@ -32,12 +46,17 @@ def D1(seq, i):
         seq[i] = phonemeInv["y"]
         return        
     
-def D2(i):
-    if i >= len(sequence) - 1 or i < 0:
+def D2(seq, i):
+    if i >= len(seq) - 1 or i < 0:
         return
-    if (sequence[i].equals(phonemeInv["u"]) or sequence[i].equals(phonemeInv["uu"])) and sequence[i+1].equalsDifferentVowel(sequence[i]):
-        sequence[i] = phonemeInv["v"]
+    if not seq[i].vowel or not seq[i+1].vowel:
         return
+    if (seq[i].equals(phonemeInv["u"]) or seq[i].equals(phonemeInv["uu"])) and seq[i+1].equalsDifferentVowel(seq[i]):
+        seq[i] = phonemeInv["v"]
+        return
+
+
+
     
 #D1(1)
 #print(sequence[1].orth)

@@ -196,5 +196,8 @@ phonemeInv[''] = Phoneme("",False,OTHER)
 # Text
 phonemeInv['*'] = Phoneme("*",True,OTHER) # Temporarily make it a vowel, for testing purposes
 
+# Deletion
+phonemeInv['_'] = Phoneme("_",False,OTHER)
+
 #for p in phonemeInv:
 #phonemeInv[p].printPhoneme()

@@ -24,8 +24,7 @@ phonemeInv = phonemicInventory.phonemeInv
 
 
 
-# Test Rules 
-
+# ****** Test Rules ******
 def T1(seq, i):
     if i >= len(seq)  or i < 0:
         return
@@ -44,9 +43,44 @@ def T2(seq, i):
         seq[i] = phonemeInv["*"]
         return 
 
+# Vowel Sandhi Rules
 
-# ooooh it applied it before M... is that right??
-# Describe what this does
+def C1(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return
+    if not seq[i].vowel or not seq[i+1].vowel: 
+        return
+    if seq[i].equals(phonemeInv["a"]) or seq[i].equals(phonemeInv["aa"])) and seq[i+1].equals(phonemeInv["e"]):
+        seq[i] = phonemeInv["ai"]
+        return 
+
+def C2(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return
+    if not seq[i].vowel or not seq[i+1].vowel:
+        return
+    if seq[i].equals(phonemeInv["a"]) or seq[i].equals(phonemeInv["aa"])) and seq[i+1].equals(phonemeInv["o"]):
+        seq[i] = phonemeInv["au"]
+        return 
+
+def C3(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return
+    if not seq[i].vowel or not seq[i+1].vowel:
+        return
+    if seq[i].equals(phonemeInv["a"]) or seq[i].equals(phonemeInv["aa"])) and seq[i+1].equals(phonemeInv["ai"]):
+        seq[i] = phonemeInv["ai"]
+        return 
+
+def C4(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return
+    if not seq[i].vowel or not seq[i+1].vowel:
+        return
+    if seq[i].equals(phonemeInv["a"]) or seq[i].equals(phonemeInv["aa"])) and seq[i+1].equals(phonemeInv["au"]):
+        seq[i] = phonemeInv["au"]
+        return 
+
 # Describe - and justify - the probability that you'll apply to it
 def D1(seq, i):
     # I'd like to have the probability encoded into the function... but I think I might have to use global variables instead
@@ -68,6 +102,27 @@ def D2(seq, i):
         seq[i] = phonemeInv["v"]
         return
 
+def D3(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return
+    if not seq[i].vowel or not seq[i+1].vowel:
+        return
+    if (seq[i].equals(phonemeInv["r2"]) or seq[i].equals(phonemeInv["R"])) and seq[i+1].equalsDifferentVowel(seq[i]):
+        seq[i] = phonemeInv["r"]
+        return
+
+def D4(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return
+    if not seq[i].vowel or not seq[i+1].vowel:
+        return
+    if seq[i].equals(phonemeInv["l2"]) and seq[i+1].equalsDifferentVowel(seq[i]):
+        seq[i] = phonemeInv["l"]
+        return
+
+
+
+
 
 # Define the probability dictionary
 RULES = {}
@@ -76,11 +131,6 @@ RULES['T2'] = (1.0, T2)
 #RULES['D2'] = (0.5, D2)
 
 # for testing purposes, we can set all probabilities to 1
-    
-#D1(1)
-#print(sequence[1].orth)
-
-# Consonant rules: 
 
 
 

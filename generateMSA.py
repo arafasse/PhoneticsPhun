@@ -1,6 +1,25 @@
 import phonemicInventory
 import sandhi
-import applyRules
+#import applyRules
+import random
+
+logfile = open("logfile.txt","w")
+
+# Does this actually change the value?
+def apply(ruleName, seq):
+    rule = sandhi.RULES[ruleName][1]
+    for i in range(0,len(seq)):
+        randNum = random.random()
+        if randNum < sandhi.RULES[ruleName][0]: # will this work? will it interpret it as a string??
+            success = rule(seq, i)
+            if success:
+                logfile.write("Application of " + ruleName + " @ position " + str(i) + "\n")
+
+
+# This applies a different probability to every matching element in the sequence
+# How will this scale??? I should do some BigOh notation...
+
+
 
 with open('rigveda') as f:
     lines = f.readlines()
@@ -32,11 +51,13 @@ for key in sandhi.RULES.keys():
     print(key)
     print(sandhi.RULES[key])
     for s in MSA:
-        applyRules.apply(key, s) # this will DEFINITELY not work... 
-
+        apply(key, s) 
 
 # Check to make sure there are changes
 for a in MSA:
     for b in a:
         print(b.orth,end='') # This end parameter only works with Python 3
     print("\n")
+
+
+logfile.close()

@@ -18,46 +18,32 @@ phonemeInv = phonemicInventory.phonemeInv
 # I just need a probability dictionary, like I was thinking before... 
 # but I would like to have the data structures coincide somehow... 
 
-class Rule:
-    def __init__(self, prob):
-        self._prob = prob
-    
-    def get_prob(self):
-        return self._prob
-     
-    def set_prob(self, prob):
-        self._prob = prob
-        
-    def equals(self, other):
-        if self.vowel != other.get_vowel():
-            return False
-        return (self.orth == other.get_orth() and self.vowel == other.get_vowel() and 
-                self.PoA == other.get_PoA())
-    
-    prob = property(get_prob, set_prob)
     
     #def printPhoneme(self):
     #    print(self._orth)
 
 
-# Define the probability dictionary
-RULES = {}
-RULES['C1'] = 0.2 # lower because of potential word boundaries 
-RULES['D1'] = 0.5
-RULES['D2'] = 0.5
 
+# Test Rules 
 
-
-# Vowel rules (excerpted) 
-
-def C1(seq, i):
-    if i >= len(seq) - 1 or i < 0:
+def T1(seq, i):
+    if i >= len(seq)  or i < 0:
         return
-    if not seq[i].vowel or not seq[i+1].vowel:
+    if not seq[i].vowel: #or not seq[i+1].vowel:
         return
-    if (seq[i].equals(phonemeInv["a"]) or seq[i].equals(phonemeInv["aa"])) and seq[i+1].equals(phonemeInv["e"]):
-        seq[i] = phonemeInv["ai"]
+    if seq[i].equals(phonemeInv["i"]): #or seq[i].equals(phonemeInv["b"])) and seq[i+1].equals(phonemeInv["e"]):
+        seq[i] = phonemeInv["*"]
         return 
+
+def T2(seq, i):
+    if i >= len(seq) or i < 0:
+        return
+    if not seq[i].vowel: #or not seq[i+1].vowel:
+        return
+    if seq[i].equals(phonemeInv["a"]): #or seq[i].equals(phonemeInv["b"])) and seq[i+1].equals(phonemeInv["e"]):
+        seq[i] = phonemeInv["*"]
+        return 
+
 
 # ooooh it applied it before M... is that right??
 # Describe what this does
@@ -83,7 +69,13 @@ def D2(seq, i):
         return
 
 
+# Define the probability dictionary
+RULES = {}
+RULES['T1'] = (1.0, T1) # lower because of potential word boundaries 
+RULES['T2'] = (1.0, T2)
+#RULES['D2'] = (0.5, D2)
 
+# for testing purposes, we can set all probabilities to 1
     
 #D1(1)
 #print(sequence[1].orth)

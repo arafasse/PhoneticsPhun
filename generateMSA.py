@@ -8,7 +8,7 @@ with open('rigveda') as f:
 phonemeInv = phonemicInventory.phonemeInv
 
 MSA = []
-numReplicates = 5 # This will eventually be 1500, but for the sake of testing, much less
+numReplicates = 1 # This will eventually be 1500, but for the sake of testing, much less
 
 # Generate the replicates
 for i in range(0,numReplicates):
@@ -32,7 +32,7 @@ for key in sandhi.RULES.keys():
     print(key)
     print(sandhi.RULES[key])
     for s in MSA:
-        applyRules.apply(sandhi.key) # this will DEFINITELY not work... 
+        applyRules.apply(key, s) # this will DEFINITELY not work... 
 
 
 # Check to make sure there are changes

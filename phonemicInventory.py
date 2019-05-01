@@ -193,5 +193,8 @@ phonemeInv['s'] = Consonant("s",DENTAL,FRICATIVE,UNVOICED,ASPIRATED)
 # Space
 phonemeInv[''] = Phoneme("",False,OTHER)
 
+# Text
+phonemeInv['*'] = Phoneme("*",True,OTHER) # Temporarily make it a vowel, for testing purposes
+
 #for p in phonemeInv:
 #phonemeInv[p].printPhoneme()

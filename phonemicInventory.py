@@ -51,6 +51,8 @@ class Phoneme:
         self._PoA = PoA
         
     def equals(self, other):
+        if self.vowel != other.get_vowel():
+            return False
         return (self.orth == other.get_orth() and self.vowel == other.get_vowel() and 
                 self.PoA == other.get_PoA())
     
@@ -65,7 +67,7 @@ class Vowel(Phoneme):
     def __init__(self, orth, PoA):
         Phoneme.__init__(self, orth, True, PoA)
     
-'''    def get_orth(self):
+    def get_orth(self):
         return self._orth
      
     def set_orth(self, orth):
@@ -84,11 +86,12 @@ class Vowel(Phoneme):
         self._PoA = PoA
         
     def equals(self, other):
+        if self.vowel != other.get_vowel():
+            return False
         return (self.orth == other.get_orth() and self.vowel == other.get_vowel() and 
                 self.PoA == other.get_PoA())
 
     orth = property(get_orth, set_orth)
-'''
 
 class Consonant(Phoneme):
     def __init__(self, orth, PoA, MoA, voiced, aspirated):
@@ -120,6 +123,8 @@ class Consonant(Phoneme):
     aspirated = property(get_aspirated, set_aspirated)
     
     def equals(self, other):
+        if self.vowel != other.get_vowel():
+            return False
         return (self.equals(other) and self.MoA == other.get_MoA() and 
                 self.voiced == other.get_voiced() and self.aspirated == other.get_aspirated())
 

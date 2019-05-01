@@ -90,6 +90,11 @@ class Vowel(Phoneme):
             return False
         return (self.orth == other.get_orth() and self.vowel == other.get_vowel() and 
                 self.PoA == other.get_PoA())
+    
+    def equalsDifferentVowel(self, other):
+        if self.vowel != other.get_vowel():
+            return False
+        return self.orth != other.get_orth() and other.get_vowel()
 
     orth = property(get_orth, set_orth)
 

@@ -133,6 +133,94 @@ class Consonant(Phoneme):
         return (self.equals(other) and self.MoA == other.get_MoA() and 
                 self.voiced == other.get_voiced() and self.aspirated == other.get_aspirated())
 
+    @staticmethod
+    def dental2palatal(other):
+        if other.get_PoA() != DENTAL:
+            return other
+        else:
+            if other.get_orth() == "t":
+                return phonemeInv['c']
+            if other.get_orth() == "th":
+                return phonemeInv['ch']
+            if other.get_orth() == "d":
+                return phonemeInv['j']
+            if other.get_orth() == "dh":
+                return phonemeInv['jh']
+            if other.get_orth() == "n": # are these really necessary? 
+                return phonemeInv['n2']
+            if other.get_orth() == "l": # are these really necessary? 
+                return phonemeInv['y']
+    
+    @staticmethod
+    def dental2retroflex(other):
+        if other.get_PoA() != DENTAL:
+            return other
+        else:
+            if other.get_orth() == "t":
+                return phonemeInv['T']
+            if other.get_orth() == "th":
+                return phonemeInv['Th']
+            if other.get_orth() == "d":
+                return phonemeInv['D']
+            if other.get_orth() == "dh":
+                return phonemeInv['Dh']
+            if other.get_orth() == "n": # are these really necessary? 
+                return phonemeInv['N']
+            if other.get_orth() == "l": # are these really necessary? 
+                return phonemeInv['r']
+
+    @staticmethod
+    def voiced2unvoiced(other):
+        if other.get_voiced() == TRUE:
+            return other
+        else:
+            if other.get_orth() == "k":
+                return phonemeInv['g']
+            if other.get_orth() == "kh":
+                return phonemeInv['gh']
+            if other.get_orth() == "c":
+                return phonemeInv['j']
+            if other.get_orth() == "ch":
+                return phonemeInv['jh']
+            if other.get_orth() == "T":
+                return phonemeInv['D']
+            if other.get_orth() == "Th":
+                return phonemeInv['Dh']
+            if other.get_orth() == "t":
+                return phonemeInv['d']
+            if other.get_orth() == "th":
+                return phonemeInv['dh']
+            if other.get_orth() == "p":
+                return phonemeInv['b']
+            if other.get_orth() == "ph":
+                return phonemeInv['bh']
+            
+    @staticmethod
+    def unvoiced2voiced(other):
+        if other.get_voiced() == FALSE:
+            return other
+        else:
+            if other.get_orth() == "g":
+                return phonemeInv['k']
+            if other.get_orth() == "gh":
+                return phonemeInv['kh']
+            if other.get_orth() == "j":
+                return phonemeInv['c']
+            if other.get_orth() == "jh":
+                return phonemeInv['ch']
+            if other.get_orth() == "D":
+                return phonemeInv['T']
+            if other.get_orth() == "Dh":
+                return phonemeInv['Th']
+            if other.get_orth() == "d":
+                return phonemeInv['t']
+            if other.get_orth() == "dh":
+                return phonemeInv['th']
+            if other.get_orth() == "b":
+                return phonemeInv['p']
+            if other.get_orth() == "bh":
+                return phonemeInv['ph']
+        
 # Define the phoneme inventory
 phonemeInv = {}
 # Define vowels

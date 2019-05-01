@@ -1,6 +1,6 @@
 import phonemicInventory
 import sandhi
-import random
+import applyRules
 
 with open('rigveda') as f:
     lines = f.readlines()
@@ -28,15 +28,10 @@ for a in MSA:
 	#s.printPhoneme()
 #	print(s.vowel)
 
-def apply(rule, prob):
-	for i in range(0,len(sequence)):
-		randNum = random.random()
-		if randNum < prob:
-			rule(i)
 
 # Apply the function to each 
 for s in MSA:
- 	apply(sandhi.D1,0.5)
+ 	applyRules.apply(sandhi.D1,s,0.5)
 
 # Check to make sure there are changes
 for a in MSA:

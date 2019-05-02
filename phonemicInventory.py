@@ -88,8 +88,11 @@ class Vowel(Phoneme):
     def equals(self, other):
         if self.vowel != other.get_vowel():
             return False
-        return (self.orth == other.get_orth() and self.vowel == other.get_vowel() and 
-                self.PoA == other.get_PoA())
+        if self.orth != other.get_orth():
+            return False
+        if self.PoA != other.get_PoA():
+            return False
+        return True
     
     def equalsDifferentVowel(self, other):
         if self.vowel != other.get_vowel():
@@ -128,11 +131,27 @@ class Consonant(Phoneme):
     aspirated = property(get_aspirated, set_aspirated)
     
     def equals(self, other):
+        #if self.vowel != other.get_vowel():
+        #    return False
+        # This is where our maximum recursion depth error is happening
+        #return (self.equals(other) and self.MoA == other.get_MoA() and 
+        #        self.voiced == other.get_voiced() and self.aspirated == other.get_aspirated())
+        # it's not as pretty, but this method should work...
+        
         if self.vowel != other.get_vowel():
             return False
-        return (self.equals(other) and self.MoA == other.get_MoA() and 
-                self.voiced == other.get_voiced() and self.aspirated == other.get_aspirated())
-
+        if self.orth != other.get_orth():
+            return False
+        if self.PoA != other.get_PoA():
+            return False
+        if self.MoA != other.get_MoA():
+            return False
+        if self.voiced != other.get_voiced():
+            return False
+        if self.aspirated != other.get_aspirated():
+            return False
+        return True
+        
     @staticmethod
     def dental2palatal(other):
         if other.get_PoA() != DENTAL:

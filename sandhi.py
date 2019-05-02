@@ -344,10 +344,10 @@ RULES['D4_vow'] = (1.0, D4_vow)
 RULES['A1_con'] = (1.0, A1_con)
 # #RULES['B1_con'] = (1.0, B1_con)
 RULES['D1_con'] = (1.0, D1_con)
-#RULES['E1_con'] = (1.0, E1_con)
-#RULES['F1_con'] = (1.0, F1_con)
-#RULES['L5_con'] = (1.0, L5_con)
-#RULES['L6_con'] = (1.0, L6_con)
+RULES['E1_con'] = (1.0, E1_con)
+RULES['F1_con'] = (1.0, F1_con)
+RULES['L5_con'] = (1.0, L5_con)
+RULES['L6_con'] = (1.0, L6_con)
 
 
 

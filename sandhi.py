@@ -1,18 +1,9 @@
 
-import phonemicInventory
-
-sequence = []
-sequence.append(phonemicInventory.phonemeInv["b"])
-sequence.append(phonemicInventory.phonemeInv["i"])
-sequence.append(phonemicInventory.phonemeInv["i"])
-
-
-print(sequence[1].orth)
-print(sequence[2].equalsDifferentVowel(sequence[1]))
+import phonemicInventory as pinv
 
 # have a separate function that computes \"different vowel\" etc\n",
 
-phonemeInv = phonemicInventory.phonemeInv
+phonemeInv = pinv.phonemeInv
 
 # no I actually don't want a class because I don't need any instances of rules...
 # I just need a probability dictionary, like I was thinking before... 
@@ -244,33 +235,125 @@ def D4_vow(seq, i):
 
 # Need the E's!!!
 
+# CONSONANT SANDHI RULES
 
+# check this one... the rule doesn't describe what it shoes
+# oh, they're calling unvoiced "hard"
 
+# Have to fix the fact that phonemes don't have a lot of these attributes...
+def A1_con(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    if seq[i].vowel or seq[i+1].vowel:
+        return False
+    if seq[i].voiced and not seq[i+1].voiced:
+        seq[i] = pinv.Consonant.voiced2unvoiced(seq[i])
+        return True
+    else:
+        return False
+
+def B1_con(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    # Will this throw a recursion error?
+    if seq[i].vowel: #or not seq[i+1].consonant:  this is causing difficulties...
+        return False
+    if not seq[i].voiced and (seq[i+1].voiced or seq[i+1].vowel):
+        seq[i] = pinv.unvoiced2voiced(seq[i])
+        return True
+    else:
+        return False
+
+def D1_con(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    if seq[i].vowel or seq[i+1].vowel:
+        return False
+    if seq[i].PoA == pinv.DENTAL and seq[i+1].PoA == pinv.PALATAL:
+        seq[i] = pinv.Consonant.dental2palatal(seq[i])
+        return True
+    else:
+        return False
+
+def E1_con(seq, i):
+    print(seq[i].orth)
+    print(seq[i].vowel)
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    if seq[i].vowel or seq[i+1].vowel:
+        return False
+    if seq[i].PoA == pinv.DENTAL and seq[i+1].PoA == pinv.RETROFLEX:
+        seq[i] = pinv.Consonant.dental2retroflex(seq[i])
+        return True
+    else:
+        return False    
+
+def F1_con(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    if seq[i].vowel or seq[i+1].vowel:
+        return False
+    if seq[i].PoA == pinv.DENTAL and seq[i+1].equals(phonemeInv["l"]):
+        seq[i] = phonemeInv["l"]
+        return True
+    else:
+        return False 
+
+def L5_con(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    if seq[i].vowel or seq[i+1].vowel:
+        return False
+    if seq[i].equals(phonemeInv["s"]) and seq[i+1].PoA == pinv.PALATAL:
+        seq[i] = phonemeInv["sh"]
+        return True
+    else:
+        return False 
+
+def L6_con(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    if seq[i].vowel or seq[i+1].vowel:
+        return False
+    if seq[i].equals(phonemeInv["s"]) and seq[i+1].PoA == pinv.RETROFLEX:
+        seq[i] = phonemeInv["Sh"]
+        return True
+    else:
+        return False 
 
 # Define the probability dictionary
 RULES = {}
 #RULES['T1'] = (1.0, T1) # lower because of potential word boundaries 
 #RULES['T2'] = (1.0, T2)
-RULES['A1_vow'] = (0.5, A1_vow)
-RULES['A2_vow'] = (0.5, A2_vow)
-RULES['A3_vow'] = (0.5, A3_vow)
-RULES['A4_vow'] = (0.5, A4_vow)
-RULES['B1_vow'] = (0.5, B1_vow)
-RULES['B2_vow'] = (0.5, B2_vow)
-RULES['B3_vow'] = (0.5, B3_vow)
-RULES['B4_vow'] = (0.5, B4_vow)
-RULES['C1_vow'] = (0.5, C1_vow)
-RULES['C2_vow'] = (0.5, C2_vow)
-RULES['C3_vow'] = (0.5, C3_vow)
-RULES['C4_vow'] = (0.5, C4_vow)
-RULES['D1_vow'] = (0.5, D1_vow)
-RULES['D2_vow'] = (0.5, D2_vow)
-RULES['D3_vow'] = (0.5, D3_vow)
-RULES['D4_vow'] = (0.5, D4_vow)
+RULES['A1_vow'] = (1.0, A1_vow)
+RULES['A2_vow'] = (1.0, A2_vow)
+RULES['A3_vow'] = (1.0, A3_vow)
+RULES['A4_vow'] = (1.0, A4_vow)
+RULES['B1_vow'] = (1.0, B1_vow)
+RULES['B2_vow'] = (1.0, B2_vow)
+RULES['B3_vow'] = (1.0, B3_vow)
+RULES['B4_vow'] = (1.0, B4_vow)
+RULES['C1_vow'] = (1.0, C1_vow)
+RULES['C2_vow'] = (1.0, C2_vow)
+RULES['C3_vow'] = (1.0, C3_vow)
+RULES['C4_vow'] = (1.0, C4_vow)
+RULES['D1_vow'] = (1.0, D1_vow)
+RULES['D2_vow'] = (1.0, D2_vow)
+RULES['D3_vow'] = (1.0, D3_vow)
+RULES['D4_vow'] = (1.0, D4_vow)
+RULES['A1_con'] = (1.0, A1_con)
+# #RULES['B1_con'] = (1.0, B1_con)
+RULES['D1_con'] = (1.0, D1_con)
+#RULES['E1_con'] = (1.0, E1_con)
+#RULES['F1_con'] = (1.0, F1_con)
+#RULES['L5_con'] = (1.0, L5_con)
+#RULES['L6_con'] = (1.0, L6_con)
 
-#RULES['D2'] = (0.5, D2)
 
-# for testing purposes, we can set all probabilities to 1
+
+#RULES['D2'] = (1.0, D2)
+
+# for testing purposes, we should set all probabilities to 1 - for determinism! 
 
 
 

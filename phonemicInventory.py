@@ -1,4 +1,4 @@
-# Establish an inventory of phonemes (maybe this should be input as a text file... could be language specific, na?)
+# Establish an inventory of phonemes
 
 # Places of articulation
 GUTTURAL = 1
@@ -67,7 +67,7 @@ class Vowel(Phoneme):
     def __init__(self, orth, PoA):
         Phoneme.__init__(self, orth, True, PoA)
     
-    def get_orth(self):
+    ''' def get_orth(self):
         return self._orth
      
     def set_orth(self, orth):
@@ -83,7 +83,7 @@ class Vowel(Phoneme):
         return self._PoA
     
     def set_PoA(self, PoA):
-        self._PoA = PoA
+        self._PoA = PoA '''
         
     def equals(self, other):
         if self.vowel != other.get_vowel():
@@ -96,7 +96,7 @@ class Vowel(Phoneme):
             return False
         return self.orth != other.get_orth() and other.get_vowel()
 
-    orth = property(get_orth, set_orth)
+    # orth = property(get_orth, set_orth)
 
 class Consonant(Phoneme):
     def __init__(self, orth, PoA, MoA, voiced, aspirated):
@@ -150,6 +150,8 @@ class Consonant(Phoneme):
                 return phonemeInv['n2']
             if other.get_orth() == "l": # are these really necessary? 
                 return phonemeInv['y']
+            else:
+                return other
     
     @staticmethod
     def dental2retroflex(other):
@@ -168,10 +170,12 @@ class Consonant(Phoneme):
                 return phonemeInv['N']
             if other.get_orth() == "l": # are these really necessary? 
                 return phonemeInv['r']
+            else:
+                return other
 
     @staticmethod
     def voiced2unvoiced(other):
-        if other.get_voiced() == TRUE:
+        if other.get_voiced():
             return other
         else:
             if other.get_orth() == "k":
@@ -194,10 +198,12 @@ class Consonant(Phoneme):
                 return phonemeInv['b']
             if other.get_orth() == "ph":
                 return phonemeInv['bh']
+            else:
+                return other
             
     @staticmethod
     def unvoiced2voiced(other):
-        if other.get_voiced() == FALSE:
+        if not other.get_voiced():
             return other
         else:
             if other.get_orth() == "g":
@@ -220,6 +226,8 @@ class Consonant(Phoneme):
                 return phonemeInv['p']
             if other.get_orth() == "bh":
                 return phonemeInv['ph']
+            else:
+                return other
         
 # Define the phoneme inventory
 phonemeInv = {}
@@ -279,13 +287,13 @@ phonemeInv['Sh'] = Consonant("Sh",RETROFLEX,FRICATIVE,UNVOICED,ASPIRATED)
 phonemeInv['s'] = Consonant("s",DENTAL,FRICATIVE,UNVOICED,ASPIRATED)
 
 # Space
-phonemeInv[''] = Phoneme("",False,OTHER)
+phonemeInv[''] = Phoneme("",True,OTHER)
 
 # Text
 phonemeInv['*'] = Phoneme("*",True,OTHER) # Temporarily make it a vowel, for testing purposes
 
 # Deletion
-phonemeInv['_'] = Phoneme("_",False,OTHER)
+phonemeInv['_'] = Phoneme("_",True,OTHER)
 
 #for p in phonemeInv:
 #phonemeInv[p].printPhoneme()

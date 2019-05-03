@@ -19,7 +19,7 @@ with open('rigveda') as f:
 phonemeInv = phonemicInventory.phonemeInv
 
 MSA = []
-numReplicates = 15 # This will eventually be 1500, but for the sake of testing, much less
+numReplicates = 1500 # This will eventually be 1500, but for the sake of testing, much less
 
 # Generate the replicates
 for i in range(0,numReplicates):
@@ -28,7 +28,7 @@ for i in range(0,numReplicates):
         sequence.append(phonemicInventory.phonemeInv[l.strip()])
     MSA.append(sequence)
 
-MSA_control = copy.deepcopy(MSA)
+MSAControl = copy.deepcopy(MSA)
 # Establish count arrays for analytics
 stats = {}
 statsControl = {} # If all the rule application probabilities are 1
@@ -63,7 +63,7 @@ def applyControl(ruleName, seq):
 # Apply ALL functions to ALL sequences
 startTime = datetime.now()
 
-for s in MSA_control:
+for s in MSAControl:
     for key in sandhi.RULES.keys():
         appliedControl = applyControl(key, s)
         statsControl[key] += appliedControl

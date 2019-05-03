@@ -1,5 +1,6 @@
 
 import phonemicInventory as pinv
+import random
 
 phonemeInv = pinv.phonemeInv
 
@@ -300,6 +301,17 @@ def L6_con(seq, i):
     else:
         return False 
 
+# We could make this more sophisticated by adjusting weights: more reasonable to go from cons --> cons, vowel --> vowel, etc
+# there could be some sort of permutation function based on which linguistic features they have in common...
+# for another day!
+def noise(seq, i):
+    if i >= len(seq) - 1 or i < 0:
+        return False
+    else: 
+        newPhoneme = random.choice(list(phonemeInv.keys()))
+        seq[i] = phonemeInv[newPhoneme]
+        return True
+
 # Define the probability dictionary
 RULES = {}
 #RULES['T1'] = (0.2, T1) # lower because of potential word boundaries 
@@ -327,6 +339,7 @@ RULES['E1_con'] = (0.2, E1_con)
 #RULES['F1_con'] = (0.2, F1_con)
 RULES['L5_con'] = (0.2, L5_con)
 #RULES['L6_con'] = (0.2, L6_con)
+RULES['noise'] = (0.0001, noise)
 
 
 # for testing purposes, we should set all probabilities to 1 - for determinism! 

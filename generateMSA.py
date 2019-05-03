@@ -5,6 +5,7 @@ import random
 from datetime import datetime
 
 logfile = open("logfile.txt","w")
+outputfile = open("sequences.txt","w")
 
 # Does this actually change the value?
 def apply(ruleName, seq):
@@ -26,7 +27,7 @@ with open('rigveda') as f:
 phonemeInv = phonemicInventory.phonemeInv
 
 MSA = []
-numReplicates = 1500 # This will eventually be 1500, but for the sake of testing, much less
+numReplicates = 100 # This will eventually be 1500, but for the sake of testing, much less
 
 # Generate the replicates
 for i in range(0,numReplicates):
@@ -55,11 +56,15 @@ for s in MSA:
         apply(key, s) 
     count += 1
 logfile.write("Time: " + str(datetime.now() - startTime))
-# Check to make sure there are changes
-#for a in MSA:
-#    for b in a:
-#        print(b.orth,end='') # This end parameter only works with Python 3
-#    print("\n")
 
+# Write sequences to output file
+count = 1
+for s in MSA:
+    outputfile.write("Sequence #" + str(count) + "\n")
+    for b in s:
+        outputfile.write(b.orth) 
+    outputfile.write("\n")
+    count += 1
 
 logfile.close()
+outputfile.close()

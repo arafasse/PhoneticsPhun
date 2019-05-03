@@ -25,7 +25,7 @@ VOICED = True
 UNASPIRATED = False
 ASPIRATED = True
 
-# Define the phoneme class, which contains both an orthographic string and a boolean (is it a vowel?)
+# Define the Phoneme class
 class Phoneme:
     def __init__(self, orth, vowel, PoA):
         self._orth = orth
@@ -60,30 +60,10 @@ class Phoneme:
     vowel = property(get_vowel, set_vowel)
     PoA = property(get_PoA, set_PoA)
     
-    #def printPhoneme(self):
-    #    print(self._orth)
-
+# Define the Vowel class, a subtype of Phoneme
 class Vowel(Phoneme):
     def __init__(self, orth, PoA):
         Phoneme.__init__(self, orth, True, PoA)
-    
-    ''' def get_orth(self):
-        return self._orth
-     
-    def set_orth(self, orth):
-        self._orth = orth
-    
-    def get_vowel(self):
-        return self._vowel
-    
-    def set_vowel(self, vowel):
-        self._vowel = vowel
-
-    def get_PoA(self):
-        return self._PoA
-    
-    def set_PoA(self, PoA):
-        self._PoA = PoA '''
         
     def equals(self, other):
         if self.vowel != other.get_vowel():
@@ -99,8 +79,7 @@ class Vowel(Phoneme):
             return False
         return self.orth != other.get_orth() and other.get_vowel()
 
-    # orth = property(get_orth, set_orth)
-
+# Define the Consonant class, a subtype of Phoneme
 class Consonant(Phoneme):
     def __init__(self, orth, PoA, MoA, voiced, aspirated):
         Phoneme.__init__(self, orth, False, PoA)
@@ -131,13 +110,7 @@ class Consonant(Phoneme):
     aspirated = property(get_aspirated, set_aspirated)
     
     def equals(self, other):
-        #if self.vowel != other.get_vowel():
-        #    return False
-        # This is where our maximum recursion depth error is happening
-        #return (self.equals(other) and self.MoA == other.get_MoA() and 
-        #        self.voiced == other.get_voiced() and self.aspirated == other.get_aspirated())
-        # it's not as pretty, but this method should work...
-        
+        # Not pretty, but avoids infinite recursion error
         if self.vowel != other.get_vowel():
             return False
         if self.orth != other.get_orth():
@@ -165,9 +138,9 @@ class Consonant(Phoneme):
                 return phonemeInv['j']
             if other.get_orth() == "dh":
                 return phonemeInv['jh']
-            if other.get_orth() == "n": # are these really necessary? 
+            if other.get_orth() == "n": 
                 return phonemeInv['n2']
-            if other.get_orth() == "l": # are these really necessary? 
+            if other.get_orth() == "l": 
                 return phonemeInv['y']
             else:
                 return other
@@ -185,9 +158,9 @@ class Consonant(Phoneme):
                 return phonemeInv['D']
             if other.get_orth() == "dh":
                 return phonemeInv['Dh']
-            if other.get_orth() == "n": # are these really necessary? 
+            if other.get_orth() == "n": 
                 return phonemeInv['N']
-            if other.get_orth() == "l": # are these really necessary? 
+            if other.get_orth() == "l": 
                 return phonemeInv['r']
             else:
                 return other
@@ -250,6 +223,7 @@ class Consonant(Phoneme):
         
 # Define the phoneme inventory
 phonemeInv = {}
+
 # Define vowels
 phonemeInv['a'] = Vowel("a",GUTTURAL)
 phonemeInv['aa'] = Vowel("aa",GUTTURAL)
@@ -267,8 +241,6 @@ phonemeInv['l2'] = Vowel("l2",DENTAL)
 phonemeInv['L'] = Vowel("L",DENTAL)
 phonemeInv['M'] = Vowel("M",CONSONANTAL_ALLOPHONES)
 phonemeInv['H'] = Vowel("H",CONSONANTAL_ALLOPHONES)
-
-#OH NO your r's and l's will overwrite each other
 
 # Define consonants
 phonemeInv['k'] = Consonant("k",GUTTURAL,PLOSIVE,UNVOICED,UNASPIRATED)
@@ -313,6 +285,3 @@ phonemeInv['*'] = Phoneme("*",True,OTHER) # Temporarily make it a vowel, for tes
 
 # Deletion
 phonemeInv['_'] = Phoneme("_",True,OTHER)
-
-#for p in phonemeInv:
-#phonemeInv[p].printPhoneme()

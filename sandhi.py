@@ -1,19 +1,9 @@
 
 import phonemicInventory as pinv
 
-# have a separate function that computes \"different vowel\" etc\n",
-
 phonemeInv = pinv.phonemeInv
 
-# no I actually don't want a class because I don't need any instances of rules...
-# I just need a probability dictionary, like I was thinking before... 
-# but I would like to have the data structures coincide somehow... 
-
-    
-    #def printPhoneme(self):
-    #    print(self._orth)
-
-# ****** Test Rules ******
+# Test Rules 
 def T1(seq, i):
     if i >= len(seq)  or i < 0:
         return
@@ -186,10 +176,7 @@ def C4_vow(seq, i):
 
 # Yana Sandhi
 
-# Describe - and justify - the probability that you'll apply to it
 def D1_vow(seq, i):
-    # I'd like to have the probability encoded into the function... but I think I might have to use global variables instead
-    # Or a global probability dictionary
     if i >= len(seq) - 1 or i < 0:
         return False
     if not seq[i].vowel or not seq[i+1].vowel:
@@ -233,14 +220,8 @@ def D4_vow(seq, i):
     else: 
         return False
 
-# Need the E's!!!
-
 # CONSONANT SANDHI RULES
 
-# check this one... the rule doesn't describe what it shoes
-# oh, they're calling unvoiced "hard"
-
-# Have to fix the fact that phonemes don't have a lot of these attributes...
 def A1_con(seq, i):
     if i >= len(seq) - 1 or i < 0:
         return False
@@ -323,11 +304,11 @@ def L6_con(seq, i):
 RULES = {}
 #RULES['T1'] = (0.2, T1) # lower because of potential word boundaries 
 #RULES['T2'] = (0.2, T2)
-RULES['A1_vow'] = (0.2, A1_vow, 16500) # This is not great programming practice, because it'll change for each input data set... 
+RULES['A1_vow'] = (0.2, A1_vow) 
 #RULES['A2_vow'] = (0.2, A2_vow)
 #RULES['A3_vow'] = (0.2, A3_vow)
 #RULES['A4_vow'] = (0.2, A4_vow)
-RULES['B1_vow'] = (0.2, B1_vow, 6000)
+RULES['B1_vow'] = (0.2, B1_vow)
 #RULES['B2_vow'] = (0.2, B2_vow)
 #RULES['B3_vow'] = (0.2, B3_vow)
 #RULES['B4_vow'] = (0.2, B4_vow)

@@ -1,20 +1,41 @@
 import phonemicInventory
 import sandhi
-#import applyRules
 import random
 from datetime import datetime
 
+# How will this scale??? I should do some BigOh notation..
+
+# Open files for logging
 logfile = open("logfile.txt","w")
 outputfile = open("sequences.txt","w")
 
-# Establish count array for analytics
+
+# Read in the input data file
+with open('rigveda') as f:
+    lines = f.readlines()
+
+# Define the phonemic inventory
+phonemeInv = phonemicInventory.phonemeInv
+
+MSA = []
+numReplicates = 1500 # This will eventually be 1500, but for the sake of testing, much less
+
+# Generate the replicates
+for i in range(0,numReplicates):
+    sequence = []
+    for l in lines:
+        sequence.append(phonemicInventory.phonemeInv[l.strip()])
+    MSA.append(sequence)
+
+# Establish count arrays for analytics
 stats = {}
-statsControl = {} # If all the probs are 1
+statsControl = {} # If all the rule application probabilities are 1
+
 for key in sandhi.RULES.keys():
     stats[key] = 0
     statsControl[key] = 0
 
-# Does this actually change the value?
+# Probabilistic apply a rule
 def apply(ruleName, seq):
     count = 0
     rule = sandhi.RULES[ruleName][1]
@@ -27,6 +48,7 @@ def apply(ruleName, seq):
                 count += 1
     return count
 
+# Apply a rule with 100% probability
 def applyControl(ruleName, seq):
     count = 0
     rule = sandhi.RULES[ruleName][1]
@@ -36,32 +58,7 @@ def applyControl(ruleName, seq):
             count += 1
     return count
 
-# This applies a different probability to every matching element in the sequence
-# How will this scale??? I should do some BigOh notation...
-
-with open('rigveda') as f:
-    lines = f.readlines()
-
-phonemeInv = phonemicInventory.phonemeInv
-
-MSA = []
-numReplicates = 10000 # This will eventually be 1500, but for the sake of testing, much less
-
-# Generate the replicates
-for i in range(0,numReplicates):
-	sequence = []
-	for l in lines:
-		sequence.append(phonemicInventory.phonemeInv[l.strip()])
-	MSA.append(sequence)
-
-# Check to make sure it worked
-#for a in MSA:
-#    for b in a:
-#    	print(b.orth,end='') # This end parameter only works with Python 3
-#    print("\n")
-
 # Apply ALL functions to ALL sequences
-
 startTime = datetime.now()
 count = 1
 for s in MSA:
@@ -83,9 +80,11 @@ for s in MSA:
     outputfile.write("\n")
     count += 1
 
+# Compute and print application rations
 for key in sandhi.RULES.keys():
     ratio = stats[key]/statsControl[key]
     outputfile.write(key + ": " + str(ratio) + "\n")
 
+#Close logging files
 logfile.close()
 outputfile.close()

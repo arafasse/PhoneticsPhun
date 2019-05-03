@@ -323,32 +323,56 @@ def L6_con(seq, i):
 RULES = {}
 #RULES['T1'] = (0.2, T1) # lower because of potential word boundaries 
 #RULES['T2'] = (0.2, T2)
-RULES['A1_vow'] = (0.2, A1_vow)
-RULES['A2_vow'] = (0.2, A2_vow)
-RULES['A3_vow'] = (0.2, A3_vow)
-RULES['A4_vow'] = (0.2, A4_vow)
-RULES['B1_vow'] = (0.2, B1_vow)
-RULES['B2_vow'] = (0.2, B2_vow)
-RULES['B3_vow'] = (0.2, B3_vow)
-RULES['B4_vow'] = (0.2, B4_vow)
-RULES['C1_vow'] = (0.2, C1_vow)
-RULES['C2_vow'] = (0.2, C2_vow)
-RULES['C3_vow'] = (0.2, C3_vow)
-RULES['C4_vow'] = (0.2, C4_vow)
+RULES['A1_vow'] = (0.2, A1_vow, 16500) # This is not great programming practice, because it'll change for each input data set... 
+#RULES['A2_vow'] = (0.2, A2_vow)
+#RULES['A3_vow'] = (0.2, A3_vow)
+#RULES['A4_vow'] = (0.2, A4_vow)
+RULES['B1_vow'] = (0.2, B1_vow, 6000)
+#RULES['B2_vow'] = (0.2, B2_vow)
+#RULES['B3_vow'] = (0.2, B3_vow)
+#RULES['B4_vow'] = (0.2, B4_vow)
+#RULES['C1_vow'] = (0.2, C1_vow)
+#RULES['C2_vow'] = (0.2, C2_vow)
+#RULES['C3_vow'] = (0.2, C3_vow)
+#RULES['C4_vow'] = (0.2, C4_vow)
 RULES['D1_vow'] = (0.2, D1_vow)
 RULES['D2_vow'] = (0.2, D2_vow)
-RULES['D3_vow'] = (0.2, D3_vow)
-RULES['D4_vow'] = (0.2, D4_vow)
+#RULES['D3_vow'] = (0.2, D3_vow)
+#RULES['D4_vow'] = (0.2, D4_vow)
 RULES['A1_con'] = (0.2, A1_con)
 # #RULES['B1_con'] = (0.2, B1_con)
 RULES['D1_con'] = (0.2, D1_con)
 RULES['E1_con'] = (0.2, E1_con)
-RULES['F1_con'] = (0.2, F1_con)
+#RULES['F1_con'] = (0.2, F1_con)
 RULES['L5_con'] = (0.2, L5_con)
-RULES['L6_con'] = (0.2, L6_con)
+#RULES['L6_con'] = (0.2, L6_con)
 
 
 # for testing purposes, we should set all probabilities to 1 - for determinism! 
+
+#When all probabilities are 1, for this specific input file, here are our counts:
+# A1_vow: 16500
+# A2_vow: 0
+# A3_vow: 0
+# A4_vow: 0
+# B1_vow: 6000
+# B2_vow: 0
+# B3_vow: 0
+# B4_vow: 0
+# C1_vow: 0
+# C2_vow: 0
+# C3_vow: 0
+# C4_vow: 0
+# D1_vow: 9000
+# D2_vow: 3000
+# D3_vow: 0
+# D4_vow: 0
+# A1_con: 4500
+# D1_con: 12000
+# E1_con: 3000
+# F1_con: 0
+# L5_con: 4500
+# L6_con: 0
 
 
 

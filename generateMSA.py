@@ -12,14 +12,14 @@ outputfile1 = open("sequences.txt","w")
 outputfile2 = open("sequences4analysis.txt","w")
 
 # Read in the input data file
-with open('rigveda') as f:
+with open('rigveda_short') as f:
     lines = f.readlines()
 
 # Define the phonemic inventory
 phonemeInv = phonemicInventory.phonemeInv
 
 MSA = []
-numReplicates = 1500 # This will eventually be 1500, but for the sake of testing, much less
+numReplicates = 15 # This will eventually be 1500, but for the sake of testing, much less
 
 # Generate the replicates
 for i in range(0,numReplicates):
@@ -90,7 +90,10 @@ for s in MSA:
 
 # Compute and print application rations
 for key in sandhi.RULES.keys():
-    ratio = stats[key]/statsControl[key]
+    if statsControl[key] == 0:
+        ratio = 0
+    else:
+        ratio = stats[key]/statsControl[key]
     outputfile1.write(key + ": " + str(ratio) + "\n")
 
 #Close logging files

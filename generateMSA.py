@@ -12,9 +12,10 @@ import numpy
 logfile = open("logfile.txt","w")
 outputfile1 = open("sequences.txt","w")
 outputfile2 = open("sequences4analysis.txt","w")
+outputfile3 = open("shannonEntropies.txt","w")
 
 # Read in the input data file
-with open('rigveda_short') as f:
+with open('rigveda') as f:
     lines = f.readlines()
 
 # Define the phonemic inventory
@@ -119,7 +120,8 @@ for c in cols:
         entropy += (p / denom) * numpy.log(p)
     entropy *= -1
     shannonEntropy.append(entropy)
-
+    if str(MSA.iloc[0,c]) != "nan":
+        outputfile3.write(str(MSA.iloc[0,c]) + ": " + str(entropy) + "\n")
 
 #MSA.T.squeeze()
 #counts = MSA.value_counts()

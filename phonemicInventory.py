@@ -277,8 +277,8 @@ phonemeInv['sh'] = Consonant("sh",PALATAL,FRICATIVE,UNVOICED,ASPIRATED)
 phonemeInv['Sh'] = Consonant("Sh",RETROFLEX,FRICATIVE,UNVOICED,ASPIRATED)
 phonemeInv['s'] = Consonant("s",DENTAL,FRICATIVE,UNVOICED,ASPIRATED)
 
-# Space
-phonemeInv[''] = Phoneme("",True,OTHER)
+# Line boundary
+phonemeInv['@'] = Phoneme("@",True,OTHER)
 
 # Text
 phonemeInv['*'] = Phoneme("*",True,OTHER) # Temporarily make it a vowel, for testing purposes

@@ -3,6 +3,8 @@ import sandhi
 import random
 from datetime import datetime
 import copy 
+import pandas as pd
+import numpy
 
 # How will this scale??? I should do some BigOh notation..
 
@@ -103,3 +105,24 @@ outputfile2.close()
 
 
 # Calculate positional Shannon entropy for the MSA 
+# okay we'll have some pandas functionality that will get the counts... for now, we'll just read from the CSV i guess?
+MSA = pd.read_csv("sequences4analysis.txt", sep=' ', header=None)
+# do I really need to read this in again anew?
+cols = list(MSA)
+denom = numReplicates
+shannonEntropy = []
+
+for c in cols:
+    q = MSA.iloc[:,c].value_counts()
+    entropy = 0
+    for p in q:
+        entropy += (p / denom) * numpy.log(p)
+    entropy *= -1
+    shannonEntropy.append(entropy)
+
+
+#MSA.T.squeeze()
+#counts = MSA.value_counts()
+#MSA.count()
+#series1=MSA.iloc[0,:]
+#counts = series1.value_counts()

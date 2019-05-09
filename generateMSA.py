@@ -22,7 +22,7 @@ with open('rigveda') as f:
 phonemeInv = phonemicInventory.phonemeInv
 
 MSA = []
-numReplicates = 15 # This will eventually be 1500, but for the sake of testing, much less
+numReplicates = 1500 # This will eventually be 1500, but for the sake of testing, much less
 
 # Generate the replicates
 for i in range(0,numReplicates):
@@ -32,6 +32,8 @@ for i in range(0,numReplicates):
     MSA.append(sequence)
 
 MSAControl = copy.deepcopy(MSA)
+MSABinary = []
+
 # Establish count arrays for analytics
 stats = {}
 statsControl = {} # If all the rule application probabilities are 1
@@ -41,7 +43,7 @@ for key in sandhi.RULES.keys():
     statsControl[key] = 0
 
 # Probabilistic apply a rule
-def apply(ruleName, seq):
+def apply(ruleName, seq, index):
     count = 0
     rule = sandhi.RULES[ruleName][1]
     for i in range(0,len(seq)):
@@ -50,7 +52,10 @@ def apply(ruleName, seq):
             success = rule(seq, i)
             if success:
                 logfile.write("Application of " + ruleName + " @ position " + str(i) + "\n")
+                MSAControl[index].append(1)
                 count += 1
+            else:
+                MSAControl[index].append(0)
     return count
 
 # Apply a rule with 100% probability
@@ -64,24 +69,27 @@ def applyControl(ruleName, seq):
     return count
 
 # Apply ALL functions to ALL sequences
+# shouldn't I save one at the beginning, to be the reference sequence?
 startTime = datetime.now()
 
-for s in MSAControl:
+for s in MSAControl[1:]: # apply to all but the first
     for key in sandhi.RULES.keys():
         appliedControl = applyControl(key, s)
         statsControl[key] += appliedControl
 
 count = 1
-for s in MSA:
+index = 0
+for s in MSA[1:]: # apply to all but the first
+    MSAControl.append([])
     logfile.write("Sequence #" + str(count) + "\n")
     for key in sandhi.RULES.keys():
-        applied = apply(key, s) 
+        applied = apply(key, s, index) 
         stats[key] += applied
     count += 1
 logfile.write("Time: " + str(datetime.now() - startTime))
 
 # Write sequences to output file
-count = 1
+count = 0 # because we're starting with the ref sequence here
 for s in MSA:
     outputfile1.write("Sequence #" + str(count) + "\n")
     for b in s:
@@ -106,13 +114,14 @@ outputfile2.close()
 
 
 # Calculate positional Shannon entropy for the MSA 
-# okay we'll have some pandas functionality that will get the counts... for now, we'll just read from the CSV i guess?
 MSA = pd.read_csv("sequences4analysis.txt", sep=' ', header=None)
-# do I really need to read this in again anew?
+# There's sure to be a more elegant way to do this, without the intermediate output file...
+# we'll keep this in an "in-house" data structure of sorts.
 cols = list(MSA)
 denom = numReplicates
 shannonEntropy = []
 
+# Calculate the shannon entropy of each column
 for c in cols:
     q = MSA.iloc[:,c].value_counts()
     entropy = 0
@@ -120,6 +129,7 @@ for c in cols:
         entropy += (p / denom) * numpy.log(p)
     entropy *= -1
     shannonEntropy.append(entropy)
+    # The end of the file always has a trailing NaN: dispose of it
     if str(MSA.iloc[0,c]) != "nan":
         outputfile3.write(str(MSA.iloc[0,c]) + ": " + str(entropy) + "\n")
 
@@ -128,3 +138,8 @@ for c in cols:
 #MSA.count()
 #series1=MSA.iloc[0,:]
 #counts = series1.value_counts()
+
+#This is all getting quite messy... I need to go back and fix it eventually.
+
+
+

@@ -8,63 +8,20 @@ import numpy
 
 # How will this scale??? I should do some BigOh notation..
 
-# Open files for logging
-logfile = open("logfile.txt","w")
-outputfile1 = open("sequences.txt","w")
-outputfile2 = open("sequences4analysis.txt","w")
-outputfile3 = open("shannonEntropies.txt","w")
-outputfile4 = open("binaryRep.txt", "w")
-
-# Read in the input data file
-with open('rigveda_short') as f:
-    lines = f.readlines()
-
-# Define the phonemic inventory
-phonemeInv = phonemicInventory.phonemeInv
-
-MSA = []
-numReplicates = 15 # This will eventually be 1500, but for the sake of testing, much less
-
-# Generate the replicates
-for i in range(0,numReplicates):
-    sequence = []
-    for l in lines:
-        sequence.append(phonemicInventory.phonemeInv[l.strip()])
-    MSA.append(sequence)
-
-#sequenceLength = len(sequence)
-#print(sequenceLength)
-
-MSAControl = copy.deepcopy(MSA)
-MSABinary = []
-
-# Establish count arrays for analytics
-stats = {}
-statsControl = {} # If all the rule application probabilities are 1
-
-for key in sandhi.RULES.keys():
-    stats[key] = 0
-    statsControl[key] = 0
-
-# Probabilistic apply a rule
+# Probabilisticly apply a rule
 def apply(ruleName, seq):#, index):
     count = 0
     rule = sandhi.RULES[ruleName][1]
-    #binaryRep = []
     for i in range(0,len(seq)):
         randNum = random.random()
-        if randNum < sandhi.RULES[ruleName][0]: # will this work? will it interpret it as a string??
+        if randNum < sandhi.RULES[ruleName][0]: # The probability of rule application
             success = rule(seq, i)
             if success:
-                logfile.write("Application of " + ruleName + " @ position " + str(i) + "\n")
-                #binaryRep.append(1)
+                ruleFile.write("Application of " + ruleName + " @ position " + str(i) + "\n")
                 count += 1
-            #else:
-                #binaryRep.append(0)
-    #MSABinary.append(binaryRep)
     return count
 
-# Apply a rule with 100% probability
+# Apply a rule with 100% probability (for control purposes)
 def applyControl(ruleName, seq):
     count = 0
     rule = sandhi.RULES[ruleName][1]
@@ -74,76 +31,106 @@ def applyControl(ruleName, seq):
             count += 1
     return count
 
-# Apply ALL functions to ALL sequences
-# shouldn't I save one at the beginning, to be the reference sequence?
-startTime = datetime.now()
-baseSequence = MSA[0]
-for b in baseSequence:
-    print(b.orth, end="")
 
-for s in MSAControl[1:]: # apply to all but the first
+# Open files for logging
+ruleFile = open("rulefile.txt","w") # For logging rule application
+statFile = open("stats.txt","w") # For logging run stats
+seqFile = open("sequences.txt","w")
+entropyFile = open("shannonEntropies.txt","w")
+binaryFile = open("binaryRep.txt", "w")
+inputFile = open("rigveda", "r")
+
+# Read in the input data file
+lines = inputFile.readlines()
+
+# Define the phonemic inventory
+phonemeInv = phonemicInventory.phonemeInv
+
+# Define the multiple sequence alignment structure
+MSA = []
+
+# Generate the replicates
+numReplicates = 15 # This will eventually be 1500, but for the sake of testing, far fewer
+for i in range(0,numReplicates):
+    sequence = []
+    for l in lines:
+        sequence.append(phonemicInventory.phonemeInv[l.strip()])
+    MSA.append(sequence)
+sequenceLength = len(sequence)
+
+# Define additional data strutcures, including the MSA to be altered 
+MSAControl = copy.deepcopy(MSA)
+MSABinary = []
+
+# Establish count arrays for analytics
+stats = {}
+statsControl = {} # If all the rule application probabilities are 1
+for key in sandhi.RULES.keys():
+    stats[key] = 0
+    statsControl[key] = 0
+
+startTime = datetime.now()
+refSequence = MSA[0] # The first sequence in the MSA is the reference sequence
+
+# Apply rules to every element in the MSA (except the reference sequence)
+for s in MSAControl[1:]: 
     for key in sandhi.RULES.keys():
         appliedControl = applyControl(key, s)
         statsControl[key] += appliedControl
 
+# Apply rules probabilistically to each sequence in the MSA, except the reference;
+# Print rule application results to rule file, and runtime stats to stat file
 count = 1
-#index = 1 #maybe this should be 1... this requires a rather massive clean-up
-#MSABinary.append([0] * sequenceLength)
-for s in MSA[1:]: # apply to all but the first
-    MSAControl.append([])
-    logfile.write("Sequence #" + str(count) + "\n")
+for s in MSA[1:]: 
+    ruleFile.write("Sequence #" + str(count) + "\n")
     for key in sandhi.RULES.keys():
-        applied = apply(key, s)#, index) 
+        applied = apply(key, s)
         stats[key] += applied
     count += 1
-#    index += 1
-logfile.write("Time: " + str(datetime.now() - startTime))
+statFile.write("Time: " + str(datetime.now() - startTime) + "\n")
 
-# Write sequences to output file
-count = 0 # because we're starting with the ref sequence here
+# Write final sequences to sequence file, for later perusal and populate the binary matrix
+i = 0 # Because we're starting with the reference sequence here
 for s in MSA:
-    index = 0
+    j = 0
     MSABinary.append([])
-    outputfile1.write("Sequence #" + str(count) + "\n")
+    #seqFile.write("Sequence #" + str(count) + "\n")
     for b in s:
-        outputfile1.write(b.orth) 
-        outputfile2.write(b.orth + " ")
-        print(b.orth)
-        print(baseSequence[index].orth)
-        if (b.orth) == (baseSequence[index].orth):
-            MSABinary[count].append(0)
+        seqFile.write(b.orth + " ")
+        if (b.orth) == (refSequence[j].orth):
+            MSABinary[i].append(0)
         else:
-            MSABinary[count].append(1)
-        index += 1
-    outputfile1.write("\n")
-    outputfile2.write("\n")
-    count += 1
+            MSABinary[i].append(1)
+        j += 1
+    seqFile.write("\n")
+    i += 1
 
+# Output binary MSA to binary file
 for s in MSABinary:
     for b in s:
-        outputfile4.write(str(b) + " ")
-    outputfile4.write("\n")
+        binaryFile.write(str(b) + " ")
+    binaryFile.write("\n")
 
-# Compute and print application rations
+# Compute and print application ratios
 for key in sandhi.RULES.keys():
     if statsControl[key] == 0:
         ratio = 0
     else:
         ratio = stats[key]/statsControl[key]
-    outputfile1.write(key + ": " + str(ratio) + "\n")
+    statFile.write(key + ": " + str(ratio) + "\n")
 
 #Close logging files
-logfile.close()
-outputfile1.close()
-outputfile2.close()
-outputfile4.close()
-
+ruleFile.close()
+statFile.close()
+seqFile.close()
+binaryFile.close()
+inputFile.close()
 
 # Calculate positional Shannon entropy for the MSA 
-MSA = pd.read_csv("sequences4analysis.txt", sep=' ', header=None)
+MSA = pd.read_csv("sequences.txt", sep=' ', header=None)
 # There's sure to be a more elegant way to do this, without the intermediate output file...
 # we'll keep this in an "in-house" data structure of sorts.
-cols = list(MSA)
+cols = list(MSA) # is this right? do I trust this?
 denom = numReplicates
 shannonEntropy = []
 
@@ -157,9 +144,9 @@ for c in cols:
     shannonEntropy.append(entropy)
     # The end of the file always has a trailing NaN: dispose of it
     if str(MSA.iloc[0,c]) != "nan":
-        outputfile3.write(str(MSA.iloc[0,c]) + ": " + str(entropy) + "\n")
+        entropyFile.write(str(MSA.iloc[0,c]) + ": " + str(entropy) + "\n")
 
-outputfile3.close()
+entropyFile.close()
 
 #MSA.T.squeeze()
 #counts = MSA.value_counts()

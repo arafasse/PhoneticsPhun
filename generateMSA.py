@@ -13,16 +13,17 @@ logfile = open("logfile.txt","w")
 outputfile1 = open("sequences.txt","w")
 outputfile2 = open("sequences4analysis.txt","w")
 outputfile3 = open("shannonEntropies.txt","w")
+outputfile4 = open("binaryRep.txt", "w")
 
 # Read in the input data file
-with open('rigveda') as f:
+with open('rigveda_short') as f:
     lines = f.readlines()
 
 # Define the phonemic inventory
 phonemeInv = phonemicInventory.phonemeInv
 
 MSA = []
-numReplicates = 1500 # This will eventually be 1500, but for the sake of testing, much less
+numReplicates = 15 # This will eventually be 1500, but for the sake of testing, much less
 
 # Generate the replicates
 for i in range(0,numReplicates):
@@ -30,6 +31,9 @@ for i in range(0,numReplicates):
     for l in lines:
         sequence.append(phonemicInventory.phonemeInv[l.strip()])
     MSA.append(sequence)
+
+sequenceLength = len(sequence)
+print(sequenceLength)
 
 MSAControl = copy.deepcopy(MSA)
 MSABinary = []
@@ -43,19 +47,21 @@ for key in sandhi.RULES.keys():
     statsControl[key] = 0
 
 # Probabilistic apply a rule
-def apply(ruleName, seq, index):
+def apply(ruleName, seq):#, index):
     count = 0
     rule = sandhi.RULES[ruleName][1]
+    binaryRep = []
     for i in range(0,len(seq)):
         randNum = random.random()
         if randNum < sandhi.RULES[ruleName][0]: # will this work? will it interpret it as a string??
             success = rule(seq, i)
             if success:
                 logfile.write("Application of " + ruleName + " @ position " + str(i) + "\n")
-                MSAControl[index].append(1)
+                binaryRep.append(1)
                 count += 1
             else:
-                MSAControl[index].append(0)
+                binaryRep.append(0)
+    MSABinary.append(binaryRep)
     return count
 
 # Apply a rule with 100% probability
@@ -78,14 +84,16 @@ for s in MSAControl[1:]: # apply to all but the first
         statsControl[key] += appliedControl
 
 count = 1
-index = 0
+#index = 1 #maybe this should be 1... this requires a rather massive clean-up
+MSABinary.append([0] * sequenceLength)
 for s in MSA[1:]: # apply to all but the first
     MSAControl.append([])
     logfile.write("Sequence #" + str(count) + "\n")
     for key in sandhi.RULES.keys():
-        applied = apply(key, s, index) 
+        applied = apply(key, s)#, index) 
         stats[key] += applied
     count += 1
+#    index += 1
 logfile.write("Time: " + str(datetime.now() - startTime))
 
 # Write sequences to output file
@@ -99,6 +107,11 @@ for s in MSA:
     outputfile2.write("\n")
     count += 1
 
+for s in MSABinary:
+    for b in s:
+        outputfile4.write(str(b) + " ")
+    outputfile4.write("\n")
+
 # Compute and print application rations
 for key in sandhi.RULES.keys():
     if statsControl[key] == 0:
@@ -111,6 +124,7 @@ for key in sandhi.RULES.keys():
 logfile.close()
 outputfile1.close()
 outputfile2.close()
+outputfile4.close()
 
 
 # Calculate positional Shannon entropy for the MSA 
@@ -132,6 +146,8 @@ for c in cols:
     # The end of the file always has a trailing NaN: dispose of it
     if str(MSA.iloc[0,c]) != "nan":
         outputfile3.write(str(MSA.iloc[0,c]) + ": " + str(entropy) + "\n")
+
+outputfile3.close()
 
 #MSA.T.squeeze()
 #counts = MSA.value_counts()

@@ -32,8 +32,8 @@ for i in range(0,numReplicates):
         sequence.append(phonemicInventory.phonemeInv[l.strip()])
     MSA.append(sequence)
 
-sequenceLength = len(sequence)
-print(sequenceLength)
+#sequenceLength = len(sequence)
+#print(sequenceLength)
 
 MSAControl = copy.deepcopy(MSA)
 MSABinary = []
@@ -50,18 +50,18 @@ for key in sandhi.RULES.keys():
 def apply(ruleName, seq):#, index):
     count = 0
     rule = sandhi.RULES[ruleName][1]
-    binaryRep = []
+    #binaryRep = []
     for i in range(0,len(seq)):
         randNum = random.random()
         if randNum < sandhi.RULES[ruleName][0]: # will this work? will it interpret it as a string??
             success = rule(seq, i)
             if success:
                 logfile.write("Application of " + ruleName + " @ position " + str(i) + "\n")
-                binaryRep.append(1)
+                #binaryRep.append(1)
                 count += 1
-            else:
-                binaryRep.append(0)
-    MSABinary.append(binaryRep)
+            #else:
+                #binaryRep.append(0)
+    #MSABinary.append(binaryRep)
     return count
 
 # Apply a rule with 100% probability
@@ -77,6 +77,9 @@ def applyControl(ruleName, seq):
 # Apply ALL functions to ALL sequences
 # shouldn't I save one at the beginning, to be the reference sequence?
 startTime = datetime.now()
+baseSequence = MSA[0]
+for b in baseSequence:
+    print(b.orth, end="")
 
 for s in MSAControl[1:]: # apply to all but the first
     for key in sandhi.RULES.keys():
@@ -85,7 +88,7 @@ for s in MSAControl[1:]: # apply to all but the first
 
 count = 1
 #index = 1 #maybe this should be 1... this requires a rather massive clean-up
-MSABinary.append([0] * sequenceLength)
+#MSABinary.append([0] * sequenceLength)
 for s in MSA[1:]: # apply to all but the first
     MSAControl.append([])
     logfile.write("Sequence #" + str(count) + "\n")
@@ -99,10 +102,19 @@ logfile.write("Time: " + str(datetime.now() - startTime))
 # Write sequences to output file
 count = 0 # because we're starting with the ref sequence here
 for s in MSA:
+    index = 0
+    MSABinary.append([])
     outputfile1.write("Sequence #" + str(count) + "\n")
     for b in s:
         outputfile1.write(b.orth) 
         outputfile2.write(b.orth + " ")
+        print(b.orth)
+        print(baseSequence[index].orth)
+        if (b.orth) == (baseSequence[index].orth):
+            MSABinary[count].append(0)
+        else:
+            MSABinary[count].append(1)
+        index += 1
     outputfile1.write("\n")
     outputfile2.write("\n")
     count += 1

@@ -6,6 +6,7 @@ import copy
 import pandas as pd
 import numpy
 import collections
+import sys
 
 
 # How will this scale??? I should do some BigOh notation..
@@ -33,7 +34,6 @@ def applyControl(ruleName, seq):
             count += 1
     return count
 
-
 # Open files for logging
 ruleFile = open("rulefile.txt","w") # For logging rule application
 statFile = open("stats.txt","w") # For logging run stats
@@ -52,7 +52,8 @@ phonemeInv = phonemicInventory.phonemeInv
 MSA = []
 
 # Generate the replicates
-numReplicates = 15 # This will eventually be 1500, but for the sake of testing, far fewer
+#numReplicates = 15 # This will eventually be 1500, but for the sake of testing, far fewer
+numReplicates = int(sys.argv[1])
 for i in range(0,numReplicates):
     sequence = []
     for l in lines:

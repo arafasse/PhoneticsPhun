@@ -223,6 +223,7 @@ class Consonant(Phoneme):
         
 # Define the phoneme inventory
 phonemeInv = {}
+alphabetSize = 42 # check this
 
 # Define vowels
 phonemeInv['a'] = Vowel("a",GUTTURAL)
@@ -285,3 +286,7 @@ phonemeInv['*'] = Phoneme("*",True,OTHER) # Temporarily make it a vowel, for tes
 
 # Deletion
 phonemeInv['_'] = Phoneme("_",True,OTHER)
+
+allPhonemes = ['k','kh','c','ch','T','Th','t','th','p','ph','g','gh','j','jh','D','Dh',
+'d','dh','b','bh','N','n','m','N2','n2','h','y','r','l','v','sh','Sh','s','a','aa','i',
+'ii','u','uu','e','ai','o','au','r2','R','l2','L','M','H','@','*','_']

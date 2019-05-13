@@ -5,6 +5,8 @@ from datetime import datetime
 import copy 
 import pandas as pd
 import numpy
+import collections
+
 
 # How will this scale??? I should do some BigOh notation..
 
@@ -38,7 +40,7 @@ statFile = open("stats.txt","w") # For logging run stats
 seqFile = open("sequences.txt","w")
 entropyFile = open("shannonEntropies.txt","w")
 binaryFile = open("binaryRep.txt", "w")
-inputFile = open("rigveda", "r")
+inputFile = open("rigveda_short", "r")
 
 # Read in the input data file
 lines = inputFile.readlines()
@@ -127,34 +129,93 @@ binaryFile.close()
 inputFile.close()
 
 # Calculate positional Shannon entropy for the MSA 
-MSA = pd.read_csv("sequences.txt", sep=' ', header=None)
+#MSA_analyze = pd.read_csv("sample.txt", sep=' ', header=None)
+MSA_analyze = pd.read_csv("sequences.txt", sep=' ', header=None)
 # There's sure to be a more elegant way to do this, without the intermediate output file...
-# we'll keep this in an "in-house" data structure of sorts.
-cols = list(MSA) # is this right? do I trust this?
+# It should be an "in-house" data structure of sorts.
+cols = list(MSA_analyze) # This gives me the indices of the columns
 denom = numReplicates
 shannonEntropy = []
 
 # Calculate the shannon entropy of each column
 for c in cols:
-    q = MSA.iloc[:,c].value_counts()
+    v = MSA_analyze.iloc[:,c].value_counts()
     entropy = 0
-    for p in q:
+    for p in v:
         entropy += (p / denom) * numpy.log(p)
     entropy *= -1
     shannonEntropy.append(entropy)
     # The end of the file always has a trailing NaN: dispose of it
-    if str(MSA.iloc[0,c]) != "nan":
-        entropyFile.write(str(MSA.iloc[0,c]) + ": " + str(entropy) + "\n")
+    if str(MSA_analyze.iloc[0,c]) != "nan":
+        entropyFile.write(str(MSA_analyze.iloc[0,c]) + ": " + str(entropy) + "\n")
 
 entropyFile.close()
 
-#MSA.T.squeeze()
-#counts = MSA.value_counts()
-#MSA.count()
-#series1=MSA.iloc[0,:]
-#counts = series1.value_counts()
+# I have to do some sort of analysis for this... some visualization I guess... not sure what though. Maybe Sid can help me with R?
+# So, for this analysis, we have the following values: 
+# N is the length of the string (53, for the short rigveda... I should probably make it smaller)
+# q is the number of possible alphabets
+# 
 
-#This is all getting quite messy... I need to go back and fix it eventually.
+# Generate .p file for analysis
+aceFile = open("ace.p", "w")
+q = phonemicInventory.alphabetSize
+alphabet = phonemicInventory.allPhonemes
+#alphabet = ['n','m','aa','ai','s','q','v']
+B = numReplicates
+N = sequenceLength
+# Okay I already have the shannon entropy, so, that's good
+
+probs = [] # This is the overall data set
+for c in cols:
+    probs_oneLetter = {} # This is going to be a dictionary of probabilities by letter
+    alph_subset = copy.deepcopy(alphabet)
+    #print(alph_subset)
+    valueCounts = MSA_analyze.iloc[:,c].value_counts()
+    #print(valueCounts)
+    for i in range(0,valueCounts.size): 
+        orth = valueCounts.index[i]
+        alph_subset.remove(orth)
+        probs_oneLetter[orth] = valueCounts[i]/B # This is where we calculate the probability that a given spot in the sequence takes on specific alphabet values
+    for alph in alph_subset:
+        probs_oneLetter[alph] = 0.0
+    probs_sorted = collections.OrderedDict(sorted(probs_oneLetter.items()))
+    probs.append(probs_sorted)
+
+# Okay I've supes gotta check this...
+
+# Now, print out these values:
+for probs_oneLetter in probs:
+    for alphabetOption in probs_oneLetter:
+        #aceFile.write(alphabetOption + ": " + str(probs_oneLetter[alphabetOption]) + '\t')
+        aceFile.write(str(probs_oneLetter[alphabetOption]) + '\t')
+    aceFile.write('\n')
+
+aceFile.close()
 
 
+# probs = [] 
+# for c in cols:
+#     p_1letter = {}
+#     for alph in alphabet:
+#         p_1letter[alph] = []
+#     valueCounts = MSA_analyze.iloc[:,c].value_counts()
+#     #print(valueCounts)
+#     for alph in alphabet:
+#         #print(alph)
+#         if alph in valueCounts:
+#             orth = valueCounts.index[0]
+#             p_1letter[orth].append(valueCounts[0]/B) # This is where we calculate the probability that a given spot in the sequence takes on specific alphabet values
+#         else:
+#             p_1letter[alph].append(0)
+#     probs.append(p_1letter)
 
+# # Okay I've supes gotta check this...
+
+# # Now, print out these values:
+# for p in probs:
+#     for q in p:
+#         aceFile.write(str(p[q]) + '\t')
+#     aceFile.write('\n')
+
+# aceFile.close()

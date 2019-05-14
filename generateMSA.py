@@ -40,7 +40,9 @@ statFile = open("stats.txt","w") # For logging run stats
 seqFile = open("sequences.txt","w")
 entropyFile = open("shannonEntropies.txt","w")
 binaryFile = open("binaryRep.txt", "w")
+#inputFile = open("../rigveda", "r")
 inputFile = open("rigveda_short", "r")
+
 
 # Read in the input data file
 lines = inputFile.readlines()
@@ -195,28 +197,40 @@ for probs_oneLetter in probs:
 aceFile.close()
 
 
-# probs = [] 
-# for c in cols:
-#     p_1letter = {}
-#     for alph in alphabet:
-#         p_1letter[alph] = []
-#     valueCounts = MSA_analyze.iloc[:,c].value_counts()
-#     #print(valueCounts)
-#     for alph in alphabet:
-#         #print(alph)
-#         if alph in valueCounts:
-#             orth = valueCounts.index[0]
-#             p_1letter[orth].append(valueCounts[0]/B) # This is where we calculate the probability that a given spot in the sequence takes on specific alphabet values
-#         else:
-#             p_1letter[alph].append(0)
-#     probs.append(p_1letter)
+# Generate .p file using the binary approximation
+aceFile = open("aceBinary.p", "w")
+MSA_bin = pd.read_csv("binaryRep.txt", sep=' ', header=None)
+cols = list(MSA_bin) # This gives me the indices of the columns
 
-# # Okay I've supes gotta check this...
+q = 2
+alphabet = ['0','1']
+B = numReplicates
+N = sequenceLength
+# Okay I already have the shannon entropy, so, that's good
 
-# # Now, print out these values:
-# for p in probs:
-#     for q in p:
-#         aceFile.write(str(p[q]) + '\t')
-#     aceFile.write('\n')
+probs = [] # This is the overall data set
+for c in cols:
+    probs_oneLetter = {} # This is going to be a dictionary of probabilities by letter
+    #alph_subset = copy.deepcopy(alphabet)
+    #print(alph_subset)
+    valueCounts = MSA_bin.iloc[:,c].value_counts()
+    #print(valueCounts)
+    for i in range(0,valueCounts.size): 
+        orth = valueCounts.index[i]
+        #alph_subset.remove(orth)
+        probs_oneLetter[orth] = valueCounts[i]/B # This is where we calculate the probability that a given spot in the sequence takes on specific alphabet values
+    #for alph in alph_subset:
+    #    probs_oneLetter[alph] = 0.0
+    probs_sorted = collections.OrderedDict(sorted(probs_oneLetter.items()))
+    probs.append(probs_sorted)
 
-# aceFile.close()
+# Okay I've supes gotta check this...
+
+# Now, print out these values:
+for probs_oneLetter in probs:
+    for alphabetOption in probs_oneLetter:
+        #aceFile.write(alphabetOption + ": " + str(probs_oneLetter[alphabetOption]) + '\t')
+        aceFile.write(str(probs_oneLetter[alphabetOption]) + '\t')
+    aceFile.write('\n')
+
+aceFile.close()

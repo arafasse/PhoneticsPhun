@@ -41,7 +41,7 @@ seqFile = open("sequences.txt","w")
 entropyFile = open("shannonEntropies.txt","w")
 binaryFile = open("binaryRep.txt", "w")
 #inputFile = open("../rigveda", "r")
-inputFile = open("rigveda_short", "r")
+inputFile = open("rigveda", "r")
 
 
 # Read in the input data file
@@ -54,8 +54,8 @@ phonemeInv = phonemicInventory.phonemeInv
 MSA = []
 
 # Generate the replicates
-#numReplicates = 15 # This will eventually be 1500, but for the sake of testing, far fewer
-numReplicates = int(sys.argv[1])
+numReplicates = 10000 # This will eventually be 1500, but for the sake of testing, far fewer
+#numReplicates = int(sys.argv[1])
 for i in range(0,numReplicates):
     sequence = []
     for l in lines:
@@ -139,6 +139,18 @@ MSA_analyze = pd.read_csv("sequences.txt", sep=' ', header=None)
 cols = list(MSA_analyze) # This gives me the indices of the columns
 denom = numReplicates
 shannonEntropy = []
+
+
+normalization = pd.Index(refSequence).value_counts()
+counts = {}
+print(type(normalization))
+for i in range(0,normalization.size): 
+    orth = normalization.index[i].orth
+    counts[orth] = normalization[i]
+for c in counts.keys():
+    print(c)
+for c in counts.values():
+    print(c)
 
 # Calculate the shannon entropy of each column
 for c in cols:

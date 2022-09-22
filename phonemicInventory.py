@@ -1,14 +1,12 @@
 # Establish an inventory of phonemes
 
 # Places of articulation
-GUTTURAL = 1
+GLOTTAL = 1 # lol I had this as "gutteral" before??
 PALATAL = 2
 RETROFLEX = 3
 DENTAL = 4
 LABIAL = 5
-PALATOGUTTURAL = 6
-LABIOGUTTURAL = 7
-CONSONANTAL_ALLOPHONES = 8
+CONSONANTAL_ALLOPHONES = 8 # ?? What was I smoking
 OTHER = 9
 
 # Manners of articulation
